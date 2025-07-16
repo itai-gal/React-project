@@ -6,6 +6,7 @@ import { SearchBar } from "./SearchBar";
 const navItems = [
     { path: "/", label: "Home" },
     { path: "/About", label: "About" },
+    { path: "/Favorites", label: "Favorites" },
     { path: "/Admin", label: "Admin CRM" },
     { path: "/business", label: "Business Page" },
     { path: "/CardsEdit", label: "Edit Cards" },
