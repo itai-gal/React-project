@@ -2,7 +2,7 @@ import { createBrowserRouter } from "react-router";
 import { Home } from "../pages/Homepage";
 import { BusinessPage } from "../pages/BusinessPage";
 import { About } from "../pages/About";
-import { Cards } from "../pages/Cards";
+import { Cards } from "../pages/MyCards";
 import { EditCards } from "../pages/EditCards";
 import { User } from "../pages/User";
 import { AdminCRM } from "../pages/AdminCRM";

@@ -1,3 +1,6 @@
+import { DynamicPageHeader } from "../components/DynamicPageHeader"
+import { MainLayout } from "../layouts/MainLayout"
+
 export const Home = () => {
-    return <div></div>
+    return <MainLayout><DynamicPageHeader header="Home" /></MainLayout>
 }

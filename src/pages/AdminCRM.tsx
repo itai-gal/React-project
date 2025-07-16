@@ -1,3 +1,6 @@
+import { DynamicPageHeader } from "../components/DynamicPageHeader"
+import { MainLayout } from "../layouts/MainLayout"
+
 export const AdminCRM = () => {
-    return <div></div>
+    return <MainLayout><DynamicPageHeader header="Admin" /></MainLayout>
 }
