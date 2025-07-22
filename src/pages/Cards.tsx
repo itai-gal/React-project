@@ -5,6 +5,7 @@ import { Card } from "../components/Cards/Card";
 import { useAuth } from "../Context/AuthContext";
 import { Toast } from "../components/Ui/Toast";
 import "./Cards.css"
+import { useNavigate } from "react-router";
 
 type CardType = {
     _id: string;
@@ -34,6 +35,7 @@ export const Cards = () => {
     const [toastType, setToastType] = useState<"success" | "error">("success");
 
     const { isBiz, isAdmin, token, userId, isLoggedIn } = useAuth();
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchCards = async () => {
@@ -64,7 +66,7 @@ export const Cards = () => {
         }
 
         try {
-            const response = await fetch(
+            const res = await fetch(
                 `https://monkfish-app-z9uza.ondigitalocean.app/bcard2/cards/${cardId}`,
                 {
                     method: "PATCH",
@@ -74,9 +76,9 @@ export const Cards = () => {
                 }
             );
 
-            if (!response.ok) {
-                const errorText = await response.text();
-                throw new Error(`Toggle favorite failed: ${errorText}`);
+            if (!res.ok) {
+                const text = await res.text();
+                throw new Error(`Toggle favorite failed: ${text}`);
             }
 
             setCards((prevCards) =>
@@ -91,11 +93,43 @@ export const Cards = () => {
                         : card
                 )
             );
+
+            setToastType("success");
+            setToastMessage("Favorite status updated.");
         } catch (err) {
             console.error("Error toggling favorite:", err);
             setToastType("error");
             setToastMessage("Failed to update favorite.");
         }
+    };
+
+    const handleDelete = async (cardId: string) => {
+        if (!token || !isAdmin) return;
+
+        if (!confirm("Are you sure you want to delete this card?")) return;
+
+        try {
+            const res = await fetch(`https://monkfish-app-z9uza.ondigitalocean.app/bcard2/cards/${cardId}`, {
+                method: "DELETE",
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+
+            if (!res.ok) throw new Error("Failed to delete card");
+
+            setCards((prev) => prev.filter((card) => card._id !== cardId));
+            setToastType("success");
+            setToastMessage("Card deleted successfully.");
+        } catch (err) {
+            console.error("Error deleting card:", err);
+            setToastType("error");
+            setToastMessage("Failed to delete card.");
+        }
+    };
+
+    const handleEdit = (cardId: string) => {
+        navigate(`/edit/${cardId}`);
     };
 
     return (
@@ -134,8 +168,8 @@ export const Cards = () => {
                                 isBusiness={isBiz}
                                 isAdmin={isAdmin}
                                 onFavoriteToggle={() => toggleFavorite(card._id)}
-                                onEdit={() => { }}
-                                onDelete={() => { }}
+                                onEdit={() => handleEdit(card._id)}
+                                onDelete={() => handleDelete(card._id)}
                             />
                         ))}
                 </div>

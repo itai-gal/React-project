@@ -56,7 +56,7 @@ export const Favorites = () => {
     const toggleFavorite = async (cardId: string) => {
         try {
             console.log(token)
-            const res = await fetch(`https://monkfish-app-z9uza.ondigitalocean.app/bcard2/cards/favorite/${cardId}`, {
+            const res = await fetch(`https://monkfish-app-z9uza.ondigitalocean.app/bcard2/cards/${cardId}/like`, {
                 method: "PATCH",
                 headers: {
                     Authorization: `Bearer ${token}`,

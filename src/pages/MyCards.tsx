@@ -4,6 +4,7 @@ import { MainLayout } from "../layouts/MainLayout";
 import { Card } from "../components/Cards/Card";
 import { useAuth } from "../Context/AuthContext";
 import { Toast } from "../components/Ui/Toast";
+import { useNavigate } from "react-router";
 
 
 type CardType = {
@@ -26,6 +27,7 @@ type CardType = {
     user_id: string;
 };
 
+const navigate = useNavigate();
 export const MyCards = () => {
     const { token, userId, isBiz } = useAuth();
     const [cards, setCards] = useState<CardType[]>([]);
@@ -115,7 +117,7 @@ export const MyCards = () => {
                             isFavorite={false}
                             isBusiness={card.user_id === userId}
                             isAdmin={false}
-                            onEdit={() => console.log("Edit", card._id)}
+                            onEdit={() => navigate(`/edit/${card._id}`)}
                             onDelete={() => handleDelete(card._id)}
                         />
                     ))}

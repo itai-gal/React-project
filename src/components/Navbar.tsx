@@ -30,19 +30,11 @@ const getNavItems = (role: UserRole, isLoggedIn: boolean): INavItems[] => {
 export const Navbar = () => {
     const location = useLocation();
     const navigate = useNavigate();
-    const [currentPath, setCurrentPath] = useState<string>("/");
     const [darkMode, setDarkMode] = useState(false);
 
     const { role, isLoggedIn, logout } = useAuth();
 
     const navItems = getNavItems(role, isLoggedIn);
-
-    useEffect(() => {
-        const match = navItems.find((item) => item.path === location.pathname);
-        if (match) {
-            setCurrentPath(match.path);
-        }
-    }, [location.pathname, navItems]);
 
     useEffect(() => {
         document.body.classList.toggle("dark-mode", darkMode);

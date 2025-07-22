@@ -15,6 +15,6 @@ export type CardData = {
     };
     image: {
         url: string;
-        alt?: string;
+        alt: string;
     };
 };
