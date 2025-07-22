@@ -17,7 +17,7 @@ const getNavItems = (role: UserRole, isLoggedIn: boolean): INavItems[] => {
             routes.push({ path: "/Favorites", name: "Favorites" });
         }
         if (role === "business" || role === "admin") {
-            routes.push({ path: "/Cards", name: "My Cards" });
+            routes.push({ path: "/MyCards", name: "My Cards" });
         }
         if (role === "admin") {
             routes.push({ path: "/Admin", name: "Admin CRM" });

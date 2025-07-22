@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router";
 import { useAuth } from "../../Context/AuthContext";
 import { Toast } from "../Ui/Toast";
-import "./RegisterForm.css";
+import "./LoginForm.css";
 
 export const LoginForm = () => {
     const [email, setEmail] = useState("");
@@ -26,55 +26,57 @@ export const LoginForm = () => {
             });
 
             if (!res.ok) {
-                const err = await res.text();
-                throw new Error(err);
+                const errorText = await res.text();
+                setToastType("error");
+                setToastMessage(errorText || "Login failed. Check your credentials.");
+                return;
             }
 
-            const token = await res.text(); // השרת מחזיר טוקן כטקסט 
+            const token = await res.text(); // לא res.json!
             login(token);
-
             setToastType("success");
             setToastMessage("Login successful!");
+
             setTimeout(() => navigate("/Cards"), 1000);
-        } catch (err: any) {
-            console.error("Login failed:", err);
+        } catch (err) {
+            console.error("Login error:", err);
             setToastType("error");
-            setToastMessage(err.message || "Login failed");
+            setToastMessage("Login failed. Please try again later.");
         }
     };
 
     return (
-        <div className="form">
-            <form className="form-grid login-form" onSubmit={handleSubmit}>
+        <div className="form-container">
+            <form onSubmit={handleSubmit} className="form">
+                <h2 className="form-title">Login</h2>
+
                 <div className="input-wrapper">
                     <input
                         type="email"
-                        required
+                        id="email"
                         value={email}
+                        required
                         onChange={(e) => setEmail(e.target.value)}
-                        placeholder=" "
-                        className={email ? "floating" : ""}
                     />
-                    <label>
-                        Email <span className="required">*</span>
+                    <label htmlFor="email" className={email ? "floating" : ""}>
+                        <i className="fa fa-envelope" /> Email <span className="required">*</span>
                     </label>
                 </div>
 
                 <div className="input-wrapper">
                     <input
                         type="password"
-                        required
+                        id="password"
                         value={password}
+                        required
                         onChange={(e) => setPassword(e.target.value)}
-                        placeholder=" "
-                        className={password ? "floating" : ""}
                     />
-                    <label>
-                        Password <span className="required">*</span>
+                    <label htmlFor="password" className={password ? "floating" : ""}>
+                        <i className="fa fa-lock" /> Password <span className="required">*</span>
                     </label>
                 </div>
 
-                <div className="form-actions" style={{ gridColumn: "span 2" }}>
+                <div className="form-actions">
                     <button type="submit" className="btn submit">
                         <i className="fa fa-sign-in" /> Login
                     </button>

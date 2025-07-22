@@ -11,7 +11,15 @@ type CardType = {
     title: string;
     subtitle: string;
     phone: string;
-    address: string;
+    address: {
+        state?: string;
+        country?: string;
+        city?: string;
+        street?: string;
+        houseNumber?: number;
+        zip?: number;
+        _id?: string;
+    };
     bizNumber: number;
     image: { url: string; alt: string };
     likes: string[];
@@ -54,12 +62,15 @@ export const MyCards = () => {
     const handleDelete = async (cardId: string) => {
         if (!token) return;
         try {
-            const res = await fetch(`https://monkfish-app-z9uza.ondigitalocean.app/bcard2/cards/${cardId}`, {
-                method: "DELETE",
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            });
+            const res = await fetch(
+                `https://monkfish-app-z9uza.ondigitalocean.app/bcard2/cards/${cardId}`,
+                {
+                    method: "DELETE",
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
 
             if (!res.ok) throw new Error("Delete failed");
 
@@ -76,9 +87,15 @@ export const MyCards = () => {
     return (
         <MainLayout>
             <DynamicPageHeader header="My Business Cards" />
+
             {toastMessage && (
-                <Toast message={toastMessage} type={toastType} onClose={() => setToastMessage("")} />
+                <Toast
+                    message={toastMessage}
+                    type={toastType}
+                    onClose={() => setToastMessage("")}
+                />
             )}
+
             {loading ? (
                 <p>Loading...</p>
             ) : cards.length === 0 ? (

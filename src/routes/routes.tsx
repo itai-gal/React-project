@@ -10,11 +10,13 @@ import { CreateCardPage } from "../pages/CreateCardPage";
 import { CardDetails } from "../pages/CardDetails";
 import { RegisterForm } from "../components/Forms/RegisterForm";
 import { LoginForm } from "../components/Forms/LoginForm";
+import { MyCards } from "../pages/MyCards";
 
 export const myrouter = createBrowserRouter([
     { path: "/", Component: Cards },
     { path: "/cards", Component: Cards },
     { path: "/About", Component: About },
+    { path: "/MyCards", Component: MyCards },
     { path: "/Favorites", Component: Favorites },
     { path: "/User", Component: User },
     { path: "/business", Component: BusinessPage },

@@ -39,12 +39,9 @@ export const Cards = () => {
         const fetchCards = async () => {
             try {
                 const res = await fetch("https://monkfish-app-z9uza.ondigitalocean.app/bcard2/cards", {
-                    headers: token
-                        ? {
-                            Authorization: `Bearer ${token}`,
-                        }
-                        : {},
+                    headers: token ? { Authorization: `Bearer ${token}` } : {},
                 });
+
                 if (!res.ok) throw new Error("Failed to fetch cards");
                 const data = await res.json();
                 setCards(data);
@@ -67,17 +64,23 @@ export const Cards = () => {
         }
 
         try {
-            const res = await fetch(`https://monkfish-app-z9uza.ondigitalocean.app/bcard2/cards/${cardId}`, {
-                method: "PATCH",
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            });
+            const response = await fetch(
+                `https://monkfish-app-z9uza.ondigitalocean.app/bcard2/cards/${cardId}`,
+                {
+                    method: "PATCH",
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
 
-            if (!res.ok) throw new Error("Toggle favorite failed");
+            if (!response.ok) {
+                const errorText = await response.text();
+                throw new Error(`Toggle favorite failed: ${errorText}`);
+            }
 
-            setCards((prev) =>
-                prev.map((card) =>
+            setCards((prevCards) =>
+                prevCards.map((card) =>
                     card._id === cardId
                         ? {
                             ...card,
@@ -94,9 +97,6 @@ export const Cards = () => {
             setToastMessage("Failed to update favorite.");
         }
     };
-
-    const formatAddress = (address: CardType["address"]) =>
-        `${address.street} ${address.houseNumber}, ${address.city}, ${address.country}`;
 
     return (
         <MainLayout>
@@ -119,7 +119,7 @@ export const Cards = () => {
             ) : (
                 <div className="cards-container">
                     {cards
-                        .slice(0, isLoggedIn ? 120 : 10)
+                        .slice(0, isLoggedIn ? 120 : 12)
                         .map((card) => (
                             <Card
                                 key={card._id}
@@ -127,7 +127,7 @@ export const Cards = () => {
                                 title={card.title}
                                 subtitle={card.subtitle}
                                 phone={card.phone}
-                                address={formatAddress(card.address)}
+                                address={card.address}
                                 cardNumber={card.bizNumber}
                                 imageUrl={card.image.url}
                                 isFavorite={userId ? card.likes.includes(userId) : false}

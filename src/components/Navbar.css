@@ -108,6 +108,10 @@
     color: white;
 }
 
+a.footer-link {
+    padding: 1rem;
+}
+
 /* dark mode */
 body.dark-mode {
     background-color: #121212;

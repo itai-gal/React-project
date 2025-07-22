@@ -118,7 +118,7 @@ export const RegisterForm = () => {
             login(data.token);
             setToastType("success");
             setToastMessage("Registration successful!");
-            setTimeout(() => navigate("/cards"), 2000);
+            setTimeout(() => navigate("/cards"), 2 * 1000);
         } catch (err) {
             setToastType("error");
             setToastMessage("Registration failed");
