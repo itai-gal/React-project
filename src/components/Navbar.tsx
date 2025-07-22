@@ -1,30 +1,48 @@
-import { NavLink, useLocation } from "react-router";
+import { NavLink, useLocation, useNavigate } from "react-router";
 import "./Navbar.css";
 import { useState, useEffect } from "react";
 import { SearchBar } from "./SearchBar";
+import type { INavItems, UserRole } from "../Types/UserTypes";
+import { useAuth } from "../Context/AuthContext";
 
-const navItems = [
-    { path: "/", label: "Home" },
-    { path: "/About", label: "About" },
-    { path: "/Favorites", label: "Favorites" },
-    { path: "/Admin", label: "Admin CRM" },
-    { path: "/business", label: "Business Page" },
-    { path: "/CardsEdit", label: "Edit Cards" },
-    { path: "/Cards", label: "My Cards" },
-    { path: "/User", label: "User" },
-];
+
+const getNavItems = (role: UserRole, isLoggedIn: boolean): INavItems[] => {
+    const routes: INavItems[] = [
+        { path: "/", name: "Cards" },
+        { path: "/About", name: "About" }
+    ];
+
+    if (isLoggedIn) {
+        if (role === "user" || role === "business" || role === "admin") {
+            routes.push({ path: "/Favorites", name: "Favorites" });
+        }
+        if (role === "business" || role === "admin") {
+            routes.push({ path: "/Cards", name: "My Cards" });
+        }
+        if (role === "admin") {
+            routes.push({ path: "/Admin", name: "Admin CRM" });
+        }
+    }
+
+    return routes;
+};
 
 export const Navbar = () => {
     const location = useLocation();
-    const [currentPath, setCurrentPath] = useState(navItems[0]);
+    const navigate = useNavigate();
+    const [currentPath, setCurrentPath] = useState<string>("/");
     const [darkMode, setDarkMode] = useState(false);
+
+    const { role, isLoggedIn, logout } = useAuth();
+
+    const navItems = getNavItems(role, isLoggedIn);
 
     useEffect(() => {
         const match = navItems.find((item) => item.path === location.pathname);
         if (match) {
-            setCurrentPath(match);
+            setCurrentPath(match.path);
         }
-    }, [location.pathname]);
+    }, [location.pathname, navItems]);
 
     useEffect(() => {
         document.body.classList.toggle("dark-mode", darkMode);
@@ -40,7 +58,7 @@ export const Navbar = () => {
 
     return (
         <nav className={`navbar ${darkMode ? "dark" : ""}`}>
-            <div className="navbar-logo">BCard</div>
+            <div className="navbar-logo" onClick={() => navigate("/")}>BCard</div>
 
             <div className="navbar-links">
                 {navItems.map((item) => (
@@ -51,20 +69,38 @@ export const Navbar = () => {
                             isActive ? "nav-link active" : "nav-link"
                         }
                     >
-                        {item.label}
+                        {item.name}
                     </NavLink>
                 ))}
             </div>
-
             <SearchBar onSearch={handleSearch} />
 
             <div className="navbar-actions">
                 <div className="dark-toggle" onClick={toggleDarkMode}>
                     {darkMode ? "🌞" : "🌚"}
                 </div>
-                <div className="avatar">
-                    <img src="/avatar.png" alt="avatar" />
-                </div>
+                {!isLoggedIn && location.pathname !== "/signup" && (
+                    <NavLink to="/signup" className="nav-link">Signup</NavLink>
+                )}
+                {!isLoggedIn && location.pathname !== "/login" && (
+                    <NavLink to="/login" className="nav-link">Login</NavLink>
+                )}
+                {isLoggedIn && (
+                    <>
+                        <button
+                            onClick={() => {
+                                logout();
+                                navigate("/");
+                            }}
+                            className="nav-link-out"
+                        >
+                            Logout
+                        </button>
+                        <div className="avatar">
+                            <img src="/avatar.png" alt="avatar" />
+                        </div>
+                    </>
+                )}
             </div>
         </nav>
     );

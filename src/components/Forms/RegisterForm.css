@@ -1,0 +1,119 @@
+.form {
+    max-width: 900px;
+    margin: auto;
+    padding: 2rem;
+    background: #e7f0fa;
+    border-radius: 8px;
+    box-shadow: 0 0 10px #ccc;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.input-wrapper {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.input-wrapper input {
+    padding: 1rem 0.5rem 0.5rem 0.5rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    outline: none;
+    background: white;
+}
+
+.input-wrapper label {
+    position: absolute;
+    left: 10px;
+    top: 1rem;
+    font-size: 1rem;
+    color: #777;
+    pointer-events: none;
+    transition: 0.2s ease all;
+    background: #e7f0fa;
+    padding: 0 4px;
+}
+
+.input-wrapper input:focus+label,
+.input-wrapper .floating {
+    top: -8px;
+    left: 8px;
+    font-size: 0.75rem;
+    color: #333;
+}
+
+.input-wrapper .required {
+    color: red;
+    margin-left: 2px;
+}
+
+.input-wrapper input:focus {
+    border-color: #4caf50;
+}
+
+.input-wrapper input.invalid {
+    border-color: red;
+}
+
+.error {
+    color: red;
+    font-size: 0.75rem;
+    margin-top: 4px;
+}
+
+.checkbox-label {
+    grid-column: span 2;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 0.5rem;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1.5rem;
+}
+
+.btn {
+    padding: 0.7rem 1.5rem;
+    border: none;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.btn:active {
+    transform: scale(0.97);
+    box-shadow: none;
+}
+
+.btn.cancel {
+    background-color: #ffdddd;
+    color: #d00;
+}
+
+.btn.cancel:hover {
+    background-color: #ffcccc;
+}
+
+.btn.submit {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.btn.submit:hover {
+    background-color: #45a049;
+}

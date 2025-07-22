@@ -3,10 +3,10 @@
     align-items: center;
     justify-content: space-between;
     padding: 0.5rem 1rem;
+    position: sticky;
     background-color: #1976d2;
     color: white;
     font-family: Arial, sans-serif;
-    position: sticky;
     top: 0;
     z-index: 1000;
 }
@@ -30,6 +30,16 @@
 
 .nav-link {
     color: white;
+    text-decoration: none;
+    font-weight: bold;
+    transition: opacity 0.2s;
+}
+
+.nav-link-out {
+    color: white;
+    background: none;
+    font-size: 1rem;
+    border: none;
     text-decoration: none;
     font-weight: bold;
     transition: opacity 0.2s;
@@ -63,7 +73,7 @@
 .navbar-search button {
     background-color: #eeeeee;
     border: none;
-    padding: 0 0.5rem;
+    padding: 0.5rem;
     cursor: pointer;
 }
 
@@ -91,8 +101,21 @@
     object-fit: cover;
 }
 
+.footer {
+    padding: 1rem;
+    text-align: center;
+    background-color: #1976d2;
+    color: white;
+}
+
 /* dark mode */
 body.dark-mode {
     background-color: #121212;
     color: #f0f0f0;
+}
+
+
+body.dark-mode .footer {
+    background-color: #212121;
+    color: #ccc;
 }
