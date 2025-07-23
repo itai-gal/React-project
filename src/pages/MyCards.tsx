@@ -5,6 +5,7 @@ import { Card } from "../components/Cards/Card";
 import { useAuth } from "../Context/AuthContext";
 import { Toast } from "../components/Ui/Toast";
 import { useNavigate } from "react-router";
+import "./MyCards.css";
 
 
 type CardType = {
@@ -29,7 +30,7 @@ type CardType = {
 
 export const MyCards = () => {
     const navigate = useNavigate();
-    const { token, userId, isBiz, isAdmin } = useAuth();
+    const { token, userId, isLoggedIn, isBiz, isAdmin } = useAuth();
     const [cards, setCards] = useState<CardType[]>([]);
     const [loading, setLoading] = useState(true);
     const [toastMessage, setToastMessage] = useState("");
@@ -117,14 +118,16 @@ export const MyCards = () => {
                             cardNumber={card.bizNumber}
                             imageUrl={card.image.url}
                             isFavorite={false}
-                            isBusiness={card.user_id === userId}
-                            isAdmin={false}
+                            isLoggedIn={isLoggedIn}
+                            isBusiness={isBiz}
+                            isAdmin={isAdmin}
                             onEdit={() => navigate(`/edit/${card._id}`)}
                             onDelete={() => handleDelete(card._id)}
                         />
                     ))}
                 </div>
             )}
+            <button className="floating-add-button" onClick={() => navigate("/create-card")}><i className="fa fa-plus" /></button>
         </MainLayout>
     );
 };

@@ -1,0 +1,24 @@
+.floating-add-button {
+    position: fixed;
+    bottom: 85px;
+    right: 45px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    font-size: 28px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    z-index: 1000;
+}
+
+.floating-add-button:hover {
+    background-color: #218838;
+}
+
+.floating-add-button i {
+    pointer-events: none;
+}

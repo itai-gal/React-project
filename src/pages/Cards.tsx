@@ -166,6 +166,7 @@ export const Cards = () => {
                                 cardNumber={card.bizNumber}
                                 imageUrl={card.image.url}
                                 isFavorite={userId ? card.likes.includes(userId) : false}
+                                isLoggedIn={isLoggedIn}
                                 isBusiness={isBiz}
                                 isAdmin={isAdmin}
                                 onFavoriteToggle={() => toggleFavorite(card._id)}

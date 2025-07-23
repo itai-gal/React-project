@@ -30,7 +30,7 @@ export const Favorites = () => {
     const [toastMessage, setToastMessage] = useState("");
     const [toastType, setToastType] = useState<"success" | "error">("success");
 
-    const { isBiz, isAdmin, token, userId } = useAuth();
+    const { isBiz, isAdmin, token, userId, isLoggedIn } = useAuth();
 
     useEffect(() => {
         if (!userId) return;
@@ -108,6 +108,7 @@ export const Favorites = () => {
                             cardNumber={card.bizNumber}
                             imageUrl={card.image.url}
                             isFavorite={true}
+                            isLoggedIn={isLoggedIn}
                             isBusiness={isBiz}
                             isAdmin={isAdmin}
                             onFavoriteToggle={() => toggleFavorite(card._id)}

@@ -37,9 +37,10 @@ export const CreateCardPage = () => {
             if (!res.ok) throw new Error("Failed to create card");
 
             const result = await res.json();
+
             setToastType("success");
             setToastMessage("Card created successfully!");
-            setTimeout(() => navigate("/Cards"), 1200);
+            setTimeout(() => navigate("/MyCards"), 1200);
         } catch (err) {
             console.error("Error creating card:", err);
             setToastType("error");

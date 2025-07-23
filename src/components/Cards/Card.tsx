@@ -20,6 +20,7 @@ type Props = {
     address: AddressType;
     cardNumber: number;
     imageUrl: string;
+    isLoggedIn: boolean;
     isFavorite: boolean;
     isBusiness: boolean;
     isAdmin: boolean;
@@ -51,6 +52,7 @@ export const Card = ({
     cardNumber,
     imageUrl,
     isFavorite,
+    isLoggedIn,
     isBusiness,
     isAdmin,
     onDelete,
@@ -65,6 +67,7 @@ export const Card = ({
         e.stopPropagation();
         action?.();
     };
+
 
     return (
         <div className="card">
@@ -87,7 +90,7 @@ export const Card = ({
             </Link>
 
             <div className="card-actions">
-                {(isBusiness || isAdmin) && (
+                {(isLoggedIn || isBusiness || isAdmin) && (
                     <button
                         onClick={(e) => handleActionClick(e, onFavoriteToggle)}
                         title={isFavorite ? "Remove from favorites" : "Add to favorites"}

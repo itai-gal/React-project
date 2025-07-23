@@ -104,7 +104,9 @@ export const CardForm = ({ onSubmit, isEdit, initialData = {} }: Props) => {
                         value={formData.subtitle}
                         onChange={handleChange}
                     />
-                    <label className={formData.subtitle ? "floating" : ""}>Subtitle</label>
+                    <label className={formData.subtitle ? "floating" : ""}>
+                        Subtitle <span className="required">*</span>
+                    </label>
                 </div>
 
                 <div className="input-wrapper">
@@ -130,6 +132,19 @@ export const CardForm = ({ onSubmit, isEdit, initialData = {} }: Props) => {
                     />
                     <label className={formData.email ? "floating" : ""}>
                         Email <span className="required">*</span>
+                    </label>
+                </div>
+
+                <div className="input-wrapper">
+                    <input
+                        type="text"
+                        name="address.state"
+                        value={formData.address.state}
+                        onChange={handleChange}
+                        required
+                    />
+                    <label className={formData.address.state ? "floating" : ""}>
+                        state <span className="required">*</span>
                     </label>
                 </div>
 
@@ -187,6 +202,19 @@ export const CardForm = ({ onSubmit, isEdit, initialData = {} }: Props) => {
 
                 <div className="input-wrapper">
                     <input
+                        type="number"
+                        name="address.zip"
+                        value={formData.address.zip}
+                        onChange={handleChange}
+                        required
+                    />
+                    <label className={formData.address.zip ? "floating" : ""}>
+                        zip <span className="required">*</span>
+                    </label>
+                </div>
+
+                <div className="input-wrapper">
+                    <input
                         type="text"
                         name="image.url"
                         value={formData.image?.url || ""}
@@ -212,7 +240,9 @@ export const CardForm = ({ onSubmit, isEdit, initialData = {} }: Props) => {
                         onChange={handleChange}
                         rows={3}
                     />
-                    <label className={formData.description ? "floating" : ""}>Description</label>
+                    <label className={formData.description ? "floating" : ""}>
+                        Description <span className="required">*</span>
+                    </label>
                 </div>
             </div>
 
