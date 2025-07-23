@@ -8,7 +8,6 @@ import { useAuth } from "../Context/AuthContext";
 
 const getNavItems = (role: UserRole, isLoggedIn: boolean): INavItems[] => {
     const routes: INavItems[] = [
-        { path: "/", name: "Cards" },
         { path: "/About", name: "About" }
     ];
 

@@ -29,20 +29,22 @@ type CardType = {
 
 export const MyCards = () => {
     const navigate = useNavigate();
-    const { token, userId, isBiz } = useAuth();
+    const { token, userId, isBiz, isAdmin } = useAuth();
     const [cards, setCards] = useState<CardType[]>([]);
     const [loading, setLoading] = useState(true);
     const [toastMessage, setToastMessage] = useState("");
     const [toastType, setToastType] = useState<"success" | "error">("success");
 
     useEffect(() => {
-        if (!isBiz || !token) return;
+        if (!isBiz && !isAdmin && !token)
+            return;
 
         const fetchMyCards = async () => {
             try {
                 const res = await fetch("https://monkfish-app-z9uza.ondigitalocean.app/bcard2/cards/my-cards", {
                     headers: {
                         Authorization: `Bearer ${token}`,
+                        "x-auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTQyNGFlOWE4ZDFlYWUxMmQzMWUzNjAiLCJpc0J1c2luZXNzIjp0cnVlLCJpc0FkbWluIjpmYWxzZSwiaWF0IjoxNjk4ODQzNDQyfQ.znXbzyxMKeNrKf3dA8jXQ5CFptM8-iXjeFtqx3XfHD0"
                     },
                 });
 

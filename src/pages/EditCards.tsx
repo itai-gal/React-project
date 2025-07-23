@@ -72,7 +72,8 @@ export const EditCards = () => {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
-                    Authorization: `Bearer ${getToken()}`
+                    Authorization: `Bearer ${getToken()}`,
+                    "x-auth-token": getToken() as any
                 },
                 body: JSON.stringify(updatedData),
             });
@@ -80,7 +81,6 @@ export const EditCards = () => {
             if (!res.ok) throw new Error("Failed to update card");
 
             const result = await res.json();
-            console.log("Card updated:", result);
             navigate("/Cards");
         } catch (err) {
             alert("Error updating card");
@@ -93,7 +93,7 @@ export const EditCards = () => {
             {loading ? (
                 <p>Loading...</p>
             ) : card ? (
-                <CardForm onSubmit={handleUpdate} initialData={card} />
+                <CardForm onSubmit={handleUpdate} initialData={card} isEdit={true} />
             ) : (
                 <p>Card not found.</p>
             )}

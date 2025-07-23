@@ -17,6 +17,7 @@ const AuthContext = createContext<AuthContextProps | null>(null);
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const [token, setToken] = useState<string | null>(null);
     const [role, setRole] = useState<UserRole>("guest");
+    console.log(role);
     const [userId, setUserId] = useState<string | null>(null);
 
     // פונקציה לבדוק מבנה JWT
@@ -57,8 +58,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         try {
             if (!isValidJWT(newToken)) throw new Error("Invalid token format");
             const decoded = jwtDecode<DecodedToken>(newToken);
-            console.log(decoded);
-
 
             if (!decoded._id) throw new Error("Token missing user ID");
             if (decoded.exp && Date.now() >= decoded.exp * 1000)
@@ -68,8 +67,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             localStorage.setItem("token", newToken);
             setToken(newToken);
             setUserId(decoded._id);
-            console.log(decoded._id);
-
 
             const detectedRole: UserRole = decoded.isAdmin
                 ? "admin"

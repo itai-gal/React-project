@@ -34,7 +34,6 @@ export const LoginForm = () => {
 
             const token = await res.text();
             login(token);
-            console.log(token);
             setToastType("success");
             setToastMessage("Login successful!");
 

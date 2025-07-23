@@ -35,7 +35,6 @@ export const Cards = () => {
     const [errorMessage, setErrorMessage] = useState("");
 
     const { isBiz, isAdmin, token, userId, isLoggedIn } = useAuth();
-    console.log(token);
 
     const navigate = useNavigate();
 

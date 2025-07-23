@@ -28,7 +28,8 @@ export const CreateCardPage = () => {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    Authorization: `Bearer ${getToken()}`
+                    Authorization: `Bearer ${getToken()}`,
+                    "x-auth-token": getToken() as any
                 },
                 body: JSON.stringify(data),
             });
@@ -36,7 +37,6 @@ export const CreateCardPage = () => {
             if (!res.ok) throw new Error("Failed to create card");
 
             const result = await res.json();
-            console.log("Card created:", result);
             setToastType("success");
             setToastMessage("Card created successfully!");
             setTimeout(() => navigate("/Cards"), 1200);

@@ -21,11 +21,12 @@ type CardData = {
 };
 
 type Props = {
+    isEdit?: boolean;
     onSubmit: (data: CardData) => void;
     initialData?: Partial<CardData>;
 };
 
-export const CardForm = ({ onSubmit, initialData = {} }: Props) => {
+export const CardForm = ({ onSubmit, isEdit, initialData = {} }: Props) => {
     const [formData, setFormData] = useState<CardData>({
         title: initialData.title || "",
         subtitle: initialData.subtitle || "",
@@ -217,7 +218,7 @@ export const CardForm = ({ onSubmit, initialData = {} }: Props) => {
 
             <div className="form-actions">
                 <button type="submit" className="btn submit">
-                    <i className="fa fa-plus" /> Create Card
+                    {isEdit ? null : <i className="fa fa-plus" />} {isEdit ? "Save Changes" : "Create Card"}
                 </button>
             </div>
         </form>
