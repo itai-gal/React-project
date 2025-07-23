@@ -63,6 +63,37 @@
     background-color: #fafafa;
 }
 
+/* 🌙 Dark Mode */
+body.dark-mode .cards-container {
+    background-color: #1c1c1c;
+}
+
+body.dark-mode .card {
+    background-color: #2a2a2a;
+    box-shadow: 0 4px 14px rgba(255, 255, 255, 0.05);
+}
+
+body.dark-mode .card:hover {
+    box-shadow: 0 8px 20px rgba(255, 255, 255, 0.15);
+}
+
+body.dark-mode .card-title {
+    color: #f0f0f0;
+}
+
+body.dark-mode .card-subtitle {
+    color: #ccc;
+}
+
+body.dark-mode .card-details {
+    color: #bbb;
+}
+
+body.dark-mode .card-actions {
+    background-color: #2f2f2f;
+    border-top: 1px solid #444;
+}
+
 @media (max-width: 480px) {
     .cards-container {
         grid-template-columns: 1fr;

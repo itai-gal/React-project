@@ -1,20 +1,25 @@
+import { useEffect } from "react";
 import { useNavigate } from "react-router";
 import { CardForm } from "../components/Forms/CardForm";
 import { getToken } from "../utils/api";
 import { useAuth } from "../Context/AuthContext";
+import { useCards } from "../Context/CardsContext";
 import { MainLayout } from "../layouts/MainLayout";
 import { DynamicPageHeader } from "../components/DynamicPageHeader";
-import { useEffect, useState } from "react";
 import { Toast } from "../components/Ui/Toast";
 import type { CardData } from "../Types/CardTypes";
-
 
 export const CreateCardPage = () => {
     const navigate = useNavigate();
     const { role, isLoggedIn } = useAuth();
 
-    const [toastMessage, setToastMessage] = useState("");
-    const [toastType, setToastType] = useState<"success" | "error">("success");
+    const {
+        toastMessage,
+        toastType,
+        setToastMessage,
+        setToastType,
+        refetchCards
+    } = useCards();
 
     useEffect(() => {
         if (!isLoggedIn || (role !== "business" && role !== "admin")) {
@@ -36,10 +41,13 @@ export const CreateCardPage = () => {
 
             if (!res.ok) throw new Error("Failed to create card");
 
-            const result = await res.json();
+            await res.json();
 
             setToastType("success");
             setToastMessage("Card created successfully!");
+
+            await refetchCards();
+
             setTimeout(() => navigate("/MyCards"), 1200);
         } catch (err) {
             console.error("Error creating card:", err);

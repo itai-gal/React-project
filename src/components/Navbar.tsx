@@ -1,15 +1,13 @@
 import { NavLink, useLocation, useNavigate } from "react-router";
 import "./Navbar.css";
-import { useState, useEffect } from "react";
 import { SearchBar } from "./SearchBar";
 import type { INavItems, UserRole } from "../Types/UserTypes";
 import { useAuth } from "../Context/AuthContext";
-
+import { useTheme } from "../Context/ThemeContext";
+import { useCards } from "../Context/CardsContext";
 
 const getNavItems = (role: UserRole, isLoggedIn: boolean): INavItems[] => {
-    const routes: INavItems[] = [
-        { path: "/About", name: "About" }
-    ];
+    const routes: INavItems[] = [{ path: "/About", name: "About" }];
 
     if (isLoggedIn) {
         if (role === "user" || role === "business" || role === "admin") {
@@ -29,27 +27,21 @@ const getNavItems = (role: UserRole, isLoggedIn: boolean): INavItems[] => {
 export const Navbar = () => {
     const location = useLocation();
     const navigate = useNavigate();
-    const [darkMode, setDarkMode] = useState(false);
-
     const { role, isLoggedIn, logout } = useAuth();
+    const { darkMode, toggleTheme } = useTheme(); //
+    const { setSearchQuery } = useCards();
 
     const navItems = getNavItems(role, isLoggedIn);
 
-    useEffect(() => {
-        document.body.classList.toggle("dark-mode", darkMode);
-    }, [darkMode]);
-
-    const toggleDarkMode = () => {
-        setDarkMode((prev) => !prev);
-    };
-
     const handleSearch = (value: string) => {
-        console.log("Search:", value);
+        setSearchQuery(value);
     };
 
     return (
         <nav className={`navbar ${darkMode ? "dark" : ""}`}>
-            <div className="navbar-logo" onClick={() => navigate("/")}>BCard</div>
+            <div className="navbar-logo" onClick={() => navigate("/")}>
+                BCard
+            </div>
 
             <div className="navbar-links">
                 {navItems.map((item) => (
@@ -64,18 +56,21 @@ export const Navbar = () => {
                     </NavLink>
                 ))}
             </div>
+
             <SearchBar onSearch={handleSearch} />
 
             <div className="navbar-actions">
-                <div className="dark-toggle" onClick={toggleDarkMode}>
+                <div className="dark-toggle" onClick={toggleTheme}>
                     {darkMode ? "🌞" : "🌚"}
                 </div>
+
                 {!isLoggedIn && location.pathname !== "/signup" && (
                     <NavLink to="/signup" className="nav-link">Signup</NavLink>
                 )}
                 {!isLoggedIn && location.pathname !== "/login" && (
                     <NavLink to="/login" className="nav-link">Login</NavLink>
                 )}
+
                 {isLoggedIn && (
                     <>
                         <button

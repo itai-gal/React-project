@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
 
 interface ThemeContextType {
     darkMode: boolean;
@@ -7,10 +7,11 @@ interface ThemeContextType {
 
 const ThemeContext = createContext<ThemeContextType | null>(null);
 
-export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
+export const ThemeProvider = ({ children }: { children: ReactNode }) => {
     const [darkMode, setDarkMode] = useState(false);
 
     useEffect(() => {
+        // קריאה רק בדפדפן כדי להימנע משגיאות SSR
         const saved = localStorage.getItem("darkMode") === "true";
         setDarkMode(saved);
         document.body.classList.toggle("dark-mode", saved);
@@ -32,6 +33,7 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
 
 export const useTheme = () => {
     const context = useContext(ThemeContext);
-    if (!context) throw new Error("useTheme must be used inside ThemeProvider");
+    if (!context)
+        throw new Error("useTheme must be used inside a ThemeProvider");
     return context;
 };

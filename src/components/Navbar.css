@@ -123,3 +123,44 @@ body.dark-mode .footer {
     background-color: #212121;
     color: #ccc;
 }
+
+@media (max-width: 768px) {
+    .navbar {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.5rem;
+    }
+
+    .navbar-logo {
+        flex-basis: 100%;
+        text-align: center;
+    }
+
+    .navbar-links {
+        flex-wrap: wrap;
+        justify-content: center;
+        flex-basis: 100%;
+        gap: 0.5rem;
+    }
+
+    .navbar-search {
+        flex-basis: 100%;
+        justify-content: center;
+        margin: 0.5rem 0;
+    }
+
+    .navbar-actions {
+        flex-wrap: wrap;
+        justify-content: center;
+        flex-basis: 100%;
+    }
+
+    .navbar-search input {
+        width: 70%;
+        max-width: 200px;
+    }
+
+    .navbar-search button {
+        width: 40px;
+    }
+}

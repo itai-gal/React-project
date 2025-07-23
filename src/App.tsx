@@ -1,13 +1,14 @@
-import { useState } from 'react';
 import './App.css';
 import { RouterProvider } from 'react-router';
 import { myrouter } from './routes/routes';
+import { ThemeProvider } from './Context/ThemeContext';
 
 function App() {
-
   return (
-    <RouterProvider router={myrouter} />
-  )
+    <ThemeProvider>
+      <RouterProvider router={myrouter} />
+    </ThemeProvider>
+  );
 }
 
-export default App
+export default App;

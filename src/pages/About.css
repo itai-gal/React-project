@@ -1,5 +1,6 @@
 .about-container {
     background-color: white;
+    color: #333;
     padding: 2rem;
     border-radius: 8px;
     max-width: 800px;
@@ -18,4 +19,14 @@
 
 .about-container li {
     margin-bottom: 0.5rem;
+}
+
+body.dark-mode .about-container {
+    background-color: #1e1e1e;
+    color: #eee;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+}
+
+body.dark-mode .about-container h2 {
+    color: #90caf9;
 }
