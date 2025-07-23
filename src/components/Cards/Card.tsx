@@ -69,7 +69,14 @@ export const Card = ({
     return (
         <div className="card">
             <Link to={`/cards/${_id}`} className="card-link">
-                <img src={imageUrl} alt={title} className="card-img" />
+                <img
+                    src={imageUrl && imageUrl.startsWith("http") ? imageUrl : "https://picsum.photos/200/300"}
+                    alt={title}
+                    className="card-img"
+                    onError={(e) => {
+                        e.currentTarget.src = "https://picsum.photos/400/400";
+                    }}
+                />
                 <div className="card-content">
                     <h3>{title}</h3>
                     {subtitle && <p>{subtitle}</p>}

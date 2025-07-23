@@ -57,14 +57,19 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         try {
             if (!isValidJWT(newToken)) throw new Error("Invalid token format");
             const decoded = jwtDecode<DecodedToken>(newToken);
+            console.log(decoded);
+
 
             if (!decoded._id) throw new Error("Token missing user ID");
             if (decoded.exp && Date.now() >= decoded.exp * 1000)
                 throw new Error("Token expired");
 
+
             localStorage.setItem("token", newToken);
             setToken(newToken);
             setUserId(decoded._id);
+            console.log(decoded._id);
+
 
             const detectedRole: UserRole = decoded.isAdmin
                 ? "admin"

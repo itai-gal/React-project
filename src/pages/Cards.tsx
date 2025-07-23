@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
+import { data, useNavigate } from "react-router";
 import { DynamicPageHeader } from "../components/DynamicPageHeader"
 import { MainLayout } from "../layouts/MainLayout"
 import { Card } from "../components/Cards/Card";
 import { useAuth } from "../Context/AuthContext";
 import { Toast } from "../components/Ui/Toast";
 import "./Cards.css"
-import { useNavigate } from "react-router";
 
 type CardType = {
     _id: string;
@@ -30,11 +30,13 @@ type CardType = {
 export const Cards = () => {
     const [cards, setCards] = useState<CardType[]>([]);
     const [loading, setLoading] = useState(true);
-    const [errorMessage, setErrorMessage] = useState("");
     const [toastMessage, setToastMessage] = useState("");
     const [toastType, setToastType] = useState<"success" | "error">("success");
+    const [errorMessage, setErrorMessage] = useState("");
 
     const { isBiz, isAdmin, token, userId, isLoggedIn } = useAuth();
+    console.log(token);
+
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -72,6 +74,7 @@ export const Cards = () => {
                     method: "PATCH",
                     headers: {
                         Authorization: `Bearer ${token}`,
+                        "x-auth-token": token as any
                     },
                 }
             );
@@ -105,7 +108,6 @@ export const Cards = () => {
 
     const handleDelete = async (cardId: string) => {
         if (!token || !isAdmin) return;
-
         if (!confirm("Are you sure you want to delete this card?")) return;
 
         try {
@@ -129,7 +131,7 @@ export const Cards = () => {
     };
 
     const handleEdit = (cardId: string) => {
-        navigate(`/edit/${cardId}`);
+        navigate(`/cards/${cardId}/edit`);
     };
 
     return (
@@ -168,8 +170,8 @@ export const Cards = () => {
                                 isBusiness={isBiz}
                                 isAdmin={isAdmin}
                                 onFavoriteToggle={() => toggleFavorite(card._id)}
-                                onEdit={() => handleEdit(card._id)}
                                 onDelete={() => handleDelete(card._id)}
+                                onEdit={() => handleEdit(card._id)}
                             />
                         ))}
                 </div>

@@ -3,6 +3,7 @@ import { DynamicPageHeader } from "../components/DynamicPageHeader";
 import { MainLayout } from "../layouts/MainLayout";
 import { Card } from "../components/Cards/Card";
 import { useAuth } from "../Context/AuthContext";
+import { Toast } from "../components/Ui/Toast";
 
 type CardType = {
     _id: string;
@@ -26,10 +27,14 @@ type CardType = {
 export const Favorites = () => {
     const [cards, setCards] = useState<CardType[]>([]);
     const [loading, setLoading] = useState(true);
+    const [toastMessage, setToastMessage] = useState("");
+    const [toastType, setToastType] = useState<"success" | "error">("success");
+
     const { isBiz, isAdmin, token, userId } = useAuth();
 
     useEffect(() => {
         if (!userId) return;
+
         const fetchCards = async () => {
             try {
                 const res = await fetch("https://monkfish-app-z9uza.ondigitalocean.app/bcard2/cards", {
@@ -39,9 +44,10 @@ export const Favorites = () => {
                 });
 
                 if (!res.ok) throw new Error("Failed to fetch cards");
-                const data: CardType[] = await res.json();
 
-                const favoriteCards = data.filter((card) => card.likes.includes(userId));
+                const data: CardType[] = await res.json();
+                const favoriteCards = data.filter((card) => card.likes.includes(userId)
+                );
                 setCards(favoriteCards);
             } catch (err) {
                 console.error("Error fetching favorites:", err);
@@ -56,24 +62,36 @@ export const Favorites = () => {
     const toggleFavorite = async (cardId: string) => {
         try {
             console.log(token)
-            const res = await fetch(`https://monkfish-app-z9uza.ondigitalocean.app/bcard2/cards/${cardId}/like`, {
+            const res = await fetch(`https://monkfish-app-z9uza.ondigitalocean.app/bcard2/cards/${cardId}`, {
                 method: "PATCH",
                 headers: {
                     Authorization: `Bearer ${token}`,
+                    "x-auth-token": token as any
                 },
             });
 
             if (!res.ok) throw new Error("Toggle favorite failed");
 
             setCards((prev) => prev.filter((card) => card._id !== cardId));
+            setToastType("success");
         } catch (err) {
             console.error("Error toggling favorite:", err);
+            setToastType("error");
+            setToastMessage("Failed to update favorites.");
         }
     };
 
     return (
         <MainLayout>
             <DynamicPageHeader header="Favorites" />
+            {toastMessage && (
+                <Toast
+                    message={toastMessage}
+                    type={toastType}
+                    onClose={() => setToastMessage("")}
+                />
+            )}
+
             {loading ? (
                 <p>Loading...</p>
             ) : cards.length === 0 ? (

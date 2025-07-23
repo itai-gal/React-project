@@ -27,8 +27,8 @@ type CardType = {
     user_id: string;
 };
 
-const navigate = useNavigate();
 export const MyCards = () => {
+    const navigate = useNavigate();
     const { token, userId, isBiz } = useAuth();
     const [cards, setCards] = useState<CardType[]>([]);
     const [loading, setLoading] = useState(true);
