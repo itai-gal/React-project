@@ -1,71 +1,88 @@
-# 💼 BCard - Business Card Manager (React Project)
+# React Business Cards Manager
 
-Welcome to **BCard**, a responsive and feature-rich web application built with **React** for managing business cards. Whether you're an individual, a business owner, or an admin — BCard allows you to create, view, favorite, and manage digital business cards.
+A full-featured web application for managing business cards, built using React and TypeScript. The system supports multiple user roles (guest, user, business, admin) with distinct permissions and views.
 
-> 🚀 [View the project on GitHub](https://github.com/itai-gal/React-project.git)
-The app will be available at: http://localhost:5173
-## 📦 Features
+🔐 **Authentication & Authorization**
+- Register/Login with JWT-based auth
+- Auto-login using AuthContext and token decoding
+- Role-based rendering (Admin/Business/User/Guest)
 
-✅ Full authentication & authorization (JWT-based)\
-✅ Role-based access: Guest / User / Business / Admin\
-✅ CRUD operations on cards (Create, Read, Update, Delete)\
-✅ Favorite (Like) system for logged-in users\
-✅ Mobile-responsive design\
-✅ Light/Dark mode toggle 🌙/🌞\
-✅ Context API state management\
-✅ Realtime toast notifications\
-✅ Input validation with floating labels\
-✅ Google Maps integration on card details\
-✅ Fully modular with reusable components
+📋 **Features**
+- 🧾 View All Cards
+- ❤️ Add/Remove Favorites (live update & toast feedback)
+- ➕ Create New Business Card (Business/Admin)
+- ✏️ Edit Your Cards (Business/Admin)
+- 🗑️ Delete Your Cards (Business/Admin)
+- 🔍 Live Search with auto-update in Navbar
+- 🗂️ My Business Cards view
+- ⭐ Favorites View for all liked cards
+- 📍 Google Maps iframe per card (CardDetails view)
 
----
+🧑‍💼 **Admin CRM**
+- View all users in the system
+- Toggle user `isBusiness` status
+- Delete non-admin users
+- Admins can perform all CRUD operations
 
-🔐 Authentication
-Authentication is JWT-based. Upon successful login or signup, the token is stored and decoded to extract user information and permissions. This governs access to pages, buttons, and actions throughout the app.
+🎨 **Design & Responsiveness**
+- Fully responsive: Desktop + Mobile
+- Floating labels, custom form validation (regex)
+- Toast feedback on all key actions (create, edit, delete, like)
+- Font Awesome 4 icons used throughout
+- Dark Mode support via ThemeContext
 
-⚠️ Notes
-This project uses a demo API (https://monkfish-app-z9uza.ondigitalocean.app/bcard2/) that may have limited capabilities.
+📦 **Tech Stack**
+- React with TypeScript
+- React Router DOM
+- Context API for global state
+- Custom Toast and Form components
+- Hosted API: [BCard API on Postman](https://documenter.getpostman.com/view/25008645/2s9YXcd5BL)
 
-Admin users can manage all cards, including deleting cards created by others.
+🚀 **Try It Locally**
+```bash
+git clone https://github.com/itai-gal/React-project.git
+cd React-project
+npm install
+npm run dev
+```
 
-Favorites are user-specific and managed via PATCH requests.
+🔗 **Live Preview (Localhost only for now)**
+This project uses a secure token-protected API and runs via Vite.
 
-## 🧪 Roles & Permissions
-
-| Role        | Can View Cards | Can Like | Can Create/Edit/Delete Own Cards | Admin Panel Access |
-|-------------|----------------|----------|----------------------------------|---------------------|
-| Guest       | ✅             | ❌       | ❌                               | ❌                  |
-| User        | ✅             | ✅       | ❌                               | ❌                  |
-| Business    | ✅             | ✅       | ✅                               | ❌                  |
-| Admin       | ✅             | ✅       | ✅ *(All Cards)*                 | ✅                  |
-
----
-
-## 🧰 Tech Stack
-
-- **React** + **Vite**
-- **React Router**
-- **TypeScript**
-- **CSS Modules**
-- **Context API**
-- **Font Awesome** for icons
-- **Fetch API** for HTTP requests
-
----
-
-## 📁 Folder Structure
-
+📁 **Project Structure**
+```
 src/
-├── components/ # Reusable UI components (Card, Toast, Header...)
-├── pages/ # Page views (Cards, MyCards, Favorites, About...)
-├── layouts/ # Layout wrappers (MainLayout)
-├── Context/ # Auth & Cards contexts
-├── routes/ # App routes
-├── styles/ # CSS files
-├── App.tsx
-├── main.tsx
-└── index.css
+  components/
+    Cards/
+    Forms/
+    Ui/
+  Context/
+    AuthContext.tsx
+    CardsContext.tsx
+    ThemeContext.tsx
+  layouts/
+    MainLayout.tsx
+  pages/
+    Cards.tsx
+    Favorites.tsx
+    MyCards.tsx
+    CreateCardPage.tsx
+    EditCards.tsx
+    Admin.tsx
+    LoginForm.tsx
+    RegisterForm.tsx
+  routes/
+    routes.tsx
+```
 
+🧪 **Bonus Features**
+- Floating "Add Card" button in business views
+- Token decoding inside AuthContext
+- Address stored as object (not string)
+- Full CRUD support with toast + fallback for images
 
-⭐️ Author
-Itai Gal
+---
+
+🌐 **GitHub Repo**: [itai-gal/React-project](https://github.com/itai-gal/React-project)
+
+⭐️ Author Itai Gal
