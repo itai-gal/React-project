@@ -56,7 +56,7 @@ export const MyCards = () => {
                             isBusiness={isBiz}
                             isAdmin={isAdmin}
                             onFavoriteToggle={() => toggleFavorite(card._id)}
-                            onEdit={() => navigate(`/edit/${card._id}`)}
+                            onEdit={() => navigate(`/cards/${card._id}/edit`)}
                             onDelete={() => handleDelete(card._id)}
                         />
                     ))}

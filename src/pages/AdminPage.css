@@ -1,0 +1,81 @@
+.admin-table {
+    margin: 2rem auto;
+    max-width: 1000px;
+    overflow-x: auto;
+    background: #f4f9ff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px #ccc;
+    padding: 1rem;
+}
+
+.admin-table table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: Arial, sans-serif;
+}
+
+.admin-table th,
+.admin-table td {
+    padding: 0.75rem;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+
+.admin-table th {
+    background-color: #1976d2;
+    color: white;
+}
+
+.admin-table tr:hover {
+    background-color: #f1f1f1;
+}
+
+.admin-table td i.fa {
+    font-size: 1.1rem;
+}
+
+.admin-table button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin: 0 5px;
+    font-size: 1.1rem;
+    transition: transform 0.2s ease;
+}
+
+.admin-table button:hover {
+    transform: scale(1.15);
+}
+
+.admin-table button.delete-btn {
+    color: #d9534f;
+}
+
+.admin-table button.delete-btn:hover {
+    color: #c9302c;
+}
+
+.admin-table button:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .admin-table {
+        padding: 0.5rem;
+    }
+
+    .admin-table table {
+        font-size: 0.9rem;
+    }
+
+    .admin-table th,
+    .admin-table td {
+        padding: 0.5rem;
+    }
+
+    .admin-table button {
+        font-size: 1rem;
+    }
+}

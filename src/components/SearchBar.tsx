@@ -4,22 +4,26 @@ type Props = {
     onSearch?: (value: string) => void;
 };
 
-export const SearchBar = ({ onSearch }: Props) => {
-    const [search, setSearch] = useState("");
+export const SearchBar = ({ onSearch }: { onSearch: (value: string) => void }) => {
+    const [query, setQuery] = useState("");
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
-        setSearch(value);
+        setQuery(value);
+        onSearch(value);
     };
+
     return (
         <div className="navbar-search">
             <input
                 type="text"
-                placeholder="Search"
-                value={search}
+                value={query}
                 onChange={handleChange}
+                placeholder="Search..."
             />
-            <button onClick={(e) => onSearch?.(search)}>🔍</button>
+            <button onClick={() => onSearch(query)}>
+                <i className="fa fa-search" />
+            </button>
         </div>
     );
 };

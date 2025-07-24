@@ -34,7 +34,7 @@ export const Navbar = () => {
     const navItems = getNavItems(role, isLoggedIn);
 
     const handleSearch = (value: string) => {
-        setSearchQuery(value);
+        setSearchQuery(value.toLowerCase());
     };
 
     return (

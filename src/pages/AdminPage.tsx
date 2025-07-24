@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
+import { MainLayout } from "../layouts/MainLayout";
 import { useAuth } from "../Context/AuthContext";
 import { getToken } from "../utils/api";
-import { MainLayout } from "../layouts/MainLayout";
 import { Toast } from "../components/Ui/Toast";
-import "./AdminCRM.css";
+import "./AdminPage.css";
 
-type UserType = {
+type User = {
     _id: string;
     name: { first: string; last: string };
     email: string;
@@ -14,97 +14,91 @@ type UserType = {
     isAdmin: boolean;
 };
 
-export const AdminCRM = () => {
+export const AdminPage = () => {
     const { role, isLoggedIn } = useAuth();
     const navigate = useNavigate();
-    const [users, setUsers] = useState<UserType[]>([]);
-    const [loading, setLoading] = useState(true);
+
+    const [users, setUsers] = useState<User[]>([]);
     const [toastMessage, setToastMessage] = useState("");
     const [toastType, setToastType] = useState<"success" | "error">("success");
 
     useEffect(() => {
         if (!isLoggedIn || role !== "admin") {
             navigate("/");
+        } else {
+            fetchUsers();
         }
-    }, [isLoggedIn, role, navigate]);
+    }, [isLoggedIn, role]);
 
     const fetchUsers = async () => {
         try {
-            const res = await fetch(
-                "https://monkfish-app-z9uza.ondigitalocean.app/bcard2/users",
-                {
-                    headers: {
-                        Authorization: `Bearer ${getToken()}`,
-                        "x-auth-token": getToken() as any,
-                    },
-                }
-            );
-            if (!res.ok) throw new Error("Failed to fetch users");
+            const res = await fetch("https://monkfish-app-z9uza.ondigitalocean.app/bcard2/users", {
+                headers: { Authorization: `Bearer ${getToken()}` },
+            });
+
+            if (!res.ok) throw new Error("Failed to load users");
+
             const data = await res.json();
             setUsers(data);
         } catch (err) {
             console.error(err);
             setToastType("error");
-            setToastMessage("Error fetching users.");
-        } finally {
-            setLoading(false);
+            setToastMessage("Failed to fetch users");
         }
     };
 
-    useEffect(() => {
-        fetchUsers();
-    }, []);
-
-    const toggleBusiness = async (userId: string) => {
+    const toggleBusinessStatus = async (userId: string, isBusiness: boolean) => {
         try {
             const res = await fetch(
                 `https://monkfish-app-z9uza.ondigitalocean.app/bcard2/users/${userId}`,
                 {
                     method: "PATCH",
                     headers: {
-                        Authorization: `Bearer ${getToken()}`,
-                        "x-auth-token": getToken() as any,
                         "Content-Type": "application/json",
+                        Authorization: `Bearer ${getToken()}`,
                     },
+                    body: JSON.stringify({ isBusiness: !isBusiness }),
                 }
             );
-            if (!res.ok) throw new Error("Toggle failed");
+
+            if (!res.ok) throw new Error("Failed to update user");
+
+            setUsers((prev) =>
+                prev.map((user) =>
+                    user._id === userId ? { ...user, isBusiness: !isBusiness } : user
+                )
+            );
 
             setToastType("success");
             setToastMessage("User status updated.");
-            fetchUsers();
         } catch (err) {
             console.error(err);
             setToastType("error");
-            setToastMessage("Failed to update user.");
+            setToastMessage("Failed to update user status.");
         }
     };
 
-    const handleDelete = async (user: UserType) => {
-        if (user.isAdmin) {
-            setToastType("error");
-            setToastMessage("Cannot delete admin user.");
-            return;
-        }
+    const deleteUser = async (userId: string, isAdmin: boolean) => {
+        if (isAdmin) return alert("Cannot delete admin user");
 
         if (!confirm("Are you sure you want to delete this user?")) return;
 
         try {
             const res = await fetch(
-                `https://monkfish-app-z9uza.ondigitalocean.app/bcard2/users/${user._id}`,
+                `https://monkfish-app-z9uza.ondigitalocean.app/bcard2/users/${userId}`,
                 {
                     method: "DELETE",
                     headers: {
                         Authorization: `Bearer ${getToken()}`,
-                        "x-auth-token": getToken() as any,
                     },
                 }
             );
-            if (!res.ok) throw new Error("Delete failed");
 
+            if (!res.ok) throw new Error("Failed to delete user");
+
+            setUsers((prev) => prev.filter((u) => u._id !== userId));
             setToastType("success");
-            setToastMessage("User deleted.");
-            fetchUsers();
+            setToastMessage("User deleted successfully.");
         } catch (err) {
             console.error(err);
             setToastType("error");
@@ -114,7 +108,7 @@ export const AdminCRM = () => {
 
     return (
         <MainLayout>
-            <h2>Admin CRM Panel</h2>
+            <h2>Admin CRM</h2>
 
             {toastMessage && (
                 <Toast
@@ -124,10 +118,8 @@ export const AdminCRM = () => {
                 />
             )}
 
-            {loading ? (
-                <p>Loading users...</p>
-            ) : (
-                <table className="users-table">
+            <div className="admin-table">
+                <table>
                     <thead>
                         <tr>
                             <th>Name</th>
@@ -142,28 +134,36 @@ export const AdminCRM = () => {
                             <tr key={user._id}>
                                 <td>{user.name.first} {user.name.last}</td>
                                 <td>{user.email}</td>
-                                <td>{user.isBusiness ? "Yes" : "No"}</td>
-                                <td>{user.isAdmin ? "Yes" : "No"}</td>
+                                <td>
+                                    <i className={`fa ${user.isBusiness ? "fa-check" : "fa-times"}`} />
+                                </td>
+                                <td>
+                                    <i className={`fa ${user.isAdmin ? "fa-check" : "fa-times"}`} />
+                                </td>
                                 <td>
                                     <button
-                                        onClick={() => toggleBusiness(user._id)}
+                                        onClick={() =>
+                                            toggleBusinessStatus(user._id, user.isBusiness)
+                                        }
                                         disabled={user.isAdmin}
+                                        title="Toggle Business Status"
                                     >
-                                        Toggle Business
+                                        <i className="fa fa-refresh" />
                                     </button>
                                     <button
-                                        onClick={() => handleDelete(user)}
+                                        onClick={() => deleteUser(user._id, user.isAdmin)}
                                         disabled={user.isAdmin}
-                                        style={{ marginLeft: "10px", color: "red" }}
+                                        className="delete-btn"
+                                        title="Delete User"
                                     >
-                                        Delete
+                                        <i className="fa fa-trash" />
                                     </button>
                                 </td>
                             </tr>
                         ))}
                     </tbody>
                 </table>
-            )}
+            </div>
         </MainLayout>
     );
 };
